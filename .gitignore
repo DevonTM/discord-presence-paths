@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.vite/
+.DS_Store
+.env
+.env.*
+*.log
+pnpm-debug.log*
+
+# Python local artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated SQLite temp files; keep the published database tracked.
+*.db-shm
+*.db-wal
+detectable.db
+!public/detectable.db

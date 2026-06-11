@@ -1,0 +1,7 @@
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/detectable.db
+  Content-Type: application/vnd.sqlite3
+  Cache-Control: public, max-age=3600

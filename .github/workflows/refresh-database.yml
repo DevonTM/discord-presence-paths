@@ -1,0 +1,37 @@
+name: Refresh detectable database
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 20 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-detectable-database
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate SQLite database
+        run: python generate_db.py --output public/detectable.db
+
+      - name: Commit updated database
+        run: |
+          if git diff --quiet -- public/detectable.db; then
+            echo "Database did not change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/detectable.db
+          git commit -m "chore: refresh detectable database"
+          git push
