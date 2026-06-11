@@ -22,12 +22,36 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate SQLite database
-        run: python generate_db.py --output public/detectable.db
+        run: python generate_db.py --output /tmp/detectable.db
 
       - name: Commit updated database
         run: |
+          python - <<'PY'
+          import os
+          import shutil
+          import sqlite3
+          import sys
+
+          current_db = "public/detectable.db"
+          new_db = "/tmp/detectable.db"
+
+          def rows(path):
+              conn = sqlite3.connect(path)
+              try:
+                  return list(conn.execute("SELECT name, path FROM games ORDER BY name COLLATE NOCASE, path"))
+              finally:
+                  conn.close()
+
+          if os.path.exists(current_db) and rows(current_db) == rows(new_db):
+              print("Database content did not change.")
+              sys.exit(0)
+
+          shutil.copyfile(new_db, current_db)
+          print("Database content changed; copied new database into public/detectable.db.")
+          PY
+
           if git diff --quiet -- public/detectable.db; then
-            echo "Database did not change."
+            echo "Database file did not change."
             exit 0
           fi
           git config user.name "github-actions[bot]"
