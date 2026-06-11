@@ -1,27 +1,25 @@
 import { defineConfig } from 'vite';
 
-const sqliteContentTypePlugin = () => ({
+function setSqliteContentType(req, res, next) {
+  const path = (req.url || '').split('?')[0];
+  if (path === '/detectable.db') {
+    res.setHeader('Content-Type', 'application/vnd.sqlite3');
+  }
+  next();
+}
+
+const sqliteContentTypePlugin = {
   name: 'sqlite-content-type',
   configureServer(server) {
-    server.middlewares.use((req, res, next) => {
-      if (req.url?.split('?')[0] === '/detectable.db') {
-        res.setHeader('Content-Type', 'application/vnd.sqlite3');
-      }
-      next();
-    });
+    server.middlewares.use(setSqliteContentType);
   },
   configurePreviewServer(server) {
-    server.middlewares.use((req, res, next) => {
-      if (req.url?.split('?')[0] === '/detectable.db') {
-        res.setHeader('Content-Type', 'application/vnd.sqlite3');
-      }
-      next();
-    });
+    server.middlewares.use(setSqliteContentType);
   },
-});
+};
 
 export default defineConfig({
-  plugins: [sqliteContentTypePlugin()],
+  plugins: [sqliteContentTypePlugin],
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
