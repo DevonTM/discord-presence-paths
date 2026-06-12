@@ -16,7 +16,7 @@
   /* Text */
   --text-primary: #e4e6eb;
   --text-secondary: #a1a5b0;
-  --text-muted: #6b7080;
+  --text-muted: #8d94a6;
   --text-accent: #b5adff;
 
   /* Accent – Discord blurple */
@@ -26,8 +26,8 @@
   --accent-soft: rgba(88, 101, 242, 0.12);
 
   /* Secondary accent – emerald */
-  --green: #3ba55d;
-  --green-glow: rgba(59, 165, 93, 0.2);
+  --green: #59c778;
+  --green-glow: rgba(89, 199, 120, 0.16);
 
   /* Status */
   --warning: #faa61a;
@@ -491,7 +491,7 @@ button:active {
 }
 
 .notice a {
-  color: #8f94a3;
+  color: #aeb3c0;
   font-weight: 600;
   text-decoration: none;
   transition: color 160ms ease, text-shadow 160ms ease;
