@@ -389,6 +389,7 @@ input:disabled {
 code {
   display: block;
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.8rem;
   font-weight: 400;
