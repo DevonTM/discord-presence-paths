@@ -217,7 +217,7 @@ function renderRows(rows, query) {
   if (rows.length === 0) {
     resultsEl.className = 'results empty';
     resultsEl.innerHTML = '<p>No matches yet. Try a shorter name or a different spelling.</p>';
-    metaEl.textContent = `No results for "${query}".`;
+    metaEl.textContent = `No results for "${query}"`;
     return;
   }
 
@@ -231,7 +231,7 @@ function renderRows(rows, query) {
       <button type="button" data-copy="${escapeHtml(row.path)}">Copy</button>
     </article>
   `).join('');
-  metaEl.textContent = `${rows.length} ${rows.length === 1 ? 'match' : 'matches'} for "${query}".`;
+  metaEl.textContent = `${rows.length} ${rows.length === 1 ? 'match' : 'matches'} for "${query}"`;
 }
 
 function search(term) {
@@ -287,7 +287,7 @@ async function init() {
   } catch (error) {
     console.error(error);
     statusEl.textContent = 'Failed';
-    metaEl.textContent = 'Could not open the SQLite database in this browser.';
+    metaEl.textContent = 'Could not load database';
     resultsEl.innerHTML = '<p>The database file loaded, but SQLite could not open it. Check the browser console for details.</p>';
   }
 }
