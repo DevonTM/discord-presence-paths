@@ -278,7 +278,6 @@ async function init() {
     state.ready = true;
 
     input.disabled = false;
-    input.focus();
     statusEl.textContent = 'Ready';
     statusEl.classList.remove('loading');
     statusEl.classList.add('ready');
@@ -292,13 +291,6 @@ async function init() {
   }
 }
 
-function moveCaretToEnd() {
-  const end = input.value.length;
-  input.setSelectionRange(end, end);
-}
-
-input.addEventListener('focus', moveCaretToEnd);
-input.addEventListener('click', moveCaretToEnd);
 input.addEventListener('input', debounce((event) => search(event.target.value)));
 resultsEl.addEventListener('click', async (event) => {
   const button = event.target.closest('button[data-copy]');
