@@ -49,7 +49,7 @@ app.innerHTML = `
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Minecraft, Valorant, Stardew…" disabled />
+          <input id="search" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Minecraft, Valorant, Stardew…" disabled />
         </div>
       </div>
     </section>
@@ -292,6 +292,9 @@ async function init() {
 }
 
 input.addEventListener('input', debounce((event) => search(event.target.value)));
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') input.blur();
+});
 resultsEl.addEventListener('click', async (event) => {
   const button = event.target.closest('button[data-copy]');
   if (!button) return;
