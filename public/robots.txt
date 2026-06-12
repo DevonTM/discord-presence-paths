@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://discord.ntr.my.id/sitemap.xml
