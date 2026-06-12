@@ -454,6 +454,19 @@ button:active {
   font-weight: 600;
 }
 
+.notice a {
+  color: #8f94a3;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 160ms ease, text-shadow 160ms ease;
+}
+
+.notice a:hover,
+.notice a:focus-visible {
+  color: #aeb3c0;
+  text-shadow: 0 0 8px rgba(174, 179, 192, 0.14);
+}
+
 .notice-text {
   display: block;
   width: fit-content;

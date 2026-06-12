@@ -57,7 +57,7 @@ app.innerHTML = `
     </section>
 
     <aside class="notice">
-      <span class="notice-text"><strong>Use responsibly:</strong> Intended for research and compatibility testing only. Misuse or Discord ToS violations may put your account at risk.</span>
+      <span class="notice-text"><strong>Use responsibly:</strong> Intended for research and compatibility testing only. Misuse or Discord <a href="https://discord.com/terms" target="_blank" rel="noopener noreferrer">ToS</a> violations may put your account at risk.</span>
     </aside>
   </main>
 `;
