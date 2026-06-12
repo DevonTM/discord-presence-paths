@@ -26,7 +26,15 @@ app.innerHTML = `
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow">Detectable paths</p>
+        <div class="hero-actions">
+          <p class="eyebrow">Detectable paths</p>
+          <a class="repo-link" href="https://github.com/DevonTM/discord-presence-paths" target="_blank" rel="noopener noreferrer" aria-label="View the discord-presence-paths repository on GitHub">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5v-1.9c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.56 2.35 1.11 2.92.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.35 9.35 0 0 1 12 6.93c.85 0 1.7.12 2.5.35 1.9-1.33 2.74-1.05 2.74-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .28.18.6.69.5A10.11 10.11 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
         <h1 id="page-title"><span class="highlight">Game path</span> lookup for Discord presence testing</h1>
         <p class="lede">Search the detectable apps database, then copy the executable path Discord may use as a detection hint.</p>
       </div>

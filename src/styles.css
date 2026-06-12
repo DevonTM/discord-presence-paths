@@ -112,12 +112,19 @@ body::before {
 }
 
 /* ── Eyebrow badge ────────────────────────────────── */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   width: fit-content;
-  margin-bottom: 20px;
   padding: 5px 14px;
   border: 1px solid var(--accent-soft);
   border-radius: 999px;
@@ -164,6 +171,35 @@ h1 .highlight {
   color: var(--text-secondary);
   font-size: clamp(0.92rem, 1.2vw, 1.04rem);
   line-height: 1.6;
+}
+
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: #aeb3c0;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.repo-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.repo-link:hover,
+.repo-link:focus-visible {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
 }
 
 /* ── Search card ──────────────────────────────────── */
