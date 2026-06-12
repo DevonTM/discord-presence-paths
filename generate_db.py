@@ -110,6 +110,11 @@ def _normalise_path(p: str) -> str:
     """Lower-case, unify slashes, strip trailing slashes."""
     return _SLASH_RE.sub("/", p.lower()).strip().rstrip("/")
 
+
+def _windows_path(p: str) -> str:
+    """Store display paths with Windows-style backslashes."""
+    return _SLASH_RE.sub(r"\\", p.strip()).rstrip(r"\\")
+
 def _exe_depth(p: str) -> int:
     return p.count("/")
 
@@ -282,7 +287,7 @@ def build_database(source: IO[bytes], db_path: str) -> Tuple[int, int, bool]:
         seen += 1
         nn = _normalise_name(game_name)
         pn = _normalise_path(exe_path)
-        batch.append((game_name, nn, exe_path, pn))
+        batch.append((game_name, nn, _windows_path(exe_path), pn))
         if len(batch) >= BATCH_SIZE:
             saved += flush()
 
