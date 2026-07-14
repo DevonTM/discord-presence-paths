@@ -24,7 +24,8 @@ jobs:
       - name: Generate SQLite database
         run: python generate_db.py --output /tmp/detectable.db
 
-      - name: Commit updated database
+      - name: Compare databases and detect changes
+        id: compare
         run: |
           python - <<'PY'
           import os
@@ -34,26 +35,62 @@ jobs:
 
           current_db = "public/detectable.db"
           new_db = "/tmp/detectable.db"
+          github_output = os.environ["GITHUB_OUTPUT"]
 
-          def rows(path):
+          def row_map(path):
               conn = sqlite3.connect(path)
               try:
-                  return list(conn.execute("SELECT name, path FROM games ORDER BY name COLLATE NOCASE, path"))
+                  return {name: path_ for name, path_ in
+                          conn.execute("SELECT name, path FROM games")}
               finally:
                   conn.close()
 
-          if os.path.exists(current_db) and rows(current_db) == rows(new_db):
-              print("Database content did not change.")
+          def dump(label, mapping):
+              print(f"{label}: {len(mapping)} rows")
+
+          if not os.path.exists(current_db):
+              print("No existing database found; treating as full addition.")
+              shutil.copyfile(new_db, current_db)
+              new = row_map(new_db)
+              dump("New", new)
+              print(f"  + {len(new)} added")
+              with open(github_output, "a") as fh:
+                  fh.write("changed=true\n")
+              sys.exit(0)
+
+          old = row_map(current_db)
+          new = row_map(new_db)
+          dump("Current", old)
+          dump("New", new)
+
+          # Order-independent logical diff (row reordering upstream is ignored).
+          added = sorted(set(new) - set(old))
+          removed = sorted(set(old) - set(new))
+          changed = sorted(n for n in (set(old) & set(new)) if old[n] != new[n])
+
+          if not (added or removed or changed):
+              print("Database content did not change (no added/removed/changed rows).")
+              with open(github_output, "a") as fh:
+                  fh.write("changed=false\n")
               sys.exit(0)
 
           shutil.copyfile(new_db, current_db)
-          print("Database content changed; copied new database into public/detectable.db.")
+          print(f"Database content changed: +{len(added)} added, "
+                f"-{len(removed)} removed, ~{len(changed)} changed")
+          for n in added[:30]:
+              print(f"  + {n} -> {new[n]}")
+          for n in removed[:30]:
+              print(f"  - {n} -> {old[n]}")
+          for n in changed[:30]:
+              print(f"  ~ {n}: {old[n]} -> {new[n]}")
+
+          with open(github_output, "a") as fh:
+              fh.write("changed=true\n")
           PY
 
-          if git diff --quiet -- public/detectable.db; then
-            echo "Database file did not change."
-            exit 0
-          fi
+      - name: Commit updated database
+        if: steps.compare.outputs.changed == 'true'
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/detectable.db

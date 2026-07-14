@@ -126,14 +126,20 @@ def _exe_depth(p: str) -> int:
 def _pick_best_path(executables: List[Dict[str, Any]]) -> Optional[str]:
     """From the executables list, return the longest valid win32 non-launcher path.
 
-    Filters: is_launcher == False, os == "win32".
-    Tie-breaks by deeper path then lexicographic value.
+    Robustness notes (avoid spurious DB churn from Discord metadata flips):
+      * Only executables explicitly flagged as a launcher (``is_launcher is True``)
+        are skipped. A missing/null ``is_launcher`` is treated as a real executable,
+        so the occasional absent flag on a game exe no longer drops the whole row
+        (which previously removed that game from the DB entirely).
+      * Selection is order-independent: we take the maximum over a stable tuple key,
+        so Discord reshuffling the ``executables`` array cannot change the result.
     """
     candidates: List[str] = []
     for exe in executables:
         if not isinstance(exe, dict):
             continue
-        if exe.get("is_launcher") is not False:
+        # Skip only explicit launchers; treat absent/null as a real executable.
+        if exe.get("is_launcher") is True:
             continue
         if exe.get("os") != "win32":
             continue
@@ -145,7 +151,8 @@ def _pick_best_path(executables: List[Dict[str, Any]]) -> Optional[str]:
     if not candidates:
         return None
 
-    # Prefer longest path string, then deepest directory depth, then alphabetically
+    # Prefer longest path string, then deepest directory depth, then alphabetically.
+    # `max` is commutative over the key, so reordering of `candidates` is irrelevant.
     return max(candidates, key=lambda v: (len(v), _exe_depth(_normalise_path(v)), v))
 
 
